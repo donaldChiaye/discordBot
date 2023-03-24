@@ -61,7 +61,7 @@ async function onNewUser(member, client) {
     const serverName = guild.name;
     const message = `${member.user.username} with the ID: ${member.user.id} joined using code ${usedCode} on server ${serverName}`;
     console.log(message);
-    
+
     return {
       userName: `${member.user.username}`,
       userCode: `${usedCode}`,
@@ -92,7 +92,7 @@ function getEventData(user) {
     'event_name': 'CompleteRegistration',
     'event_time': Math.floor(Date.now() / 1000),
     'event_source_url': 'https://www.0xbattleground.com',
-    'action_source': 'chat',
+    'action_source': 'website',
     'user_data': {
       'fn': generateHash(user.userName, salt) || ' ',
       'external_id': generateHash(user.userId, salt) || '',
@@ -103,13 +103,12 @@ function getEventData(user) {
     },
     'custom_data': {
       'content_name': 'Discord Server Join',
-      'content_category': 'Discord Registration',
-      'status': 'registered'
+      'currency': user.code,
+      'status': true,
+      'value': 0
     },
   }]}
-
   console.log('params: ', params);
-
   return params;
 }
 

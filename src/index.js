@@ -20,8 +20,8 @@ const data = {
   password: `${process.env.MYSQL_PASSWORD}`,
   database: `${process.env.MYSQL_DATABASE}`,
 }
-
 const table = process.env.MYSQL_TABLE_NAME;
+
 const db = mysql.createConnection(data);
 
 
@@ -80,12 +80,24 @@ client.on('guildMemberAdd', async (member) => {
           const {userId, userCode, userName, joinedAt} = user
           console.log('New User: ', {userId: userId, code: userCode, userName: userName, time: joinedAt});
 
+          const insertQuery = `INSERT INTO ${table} (userId, userCode, userName, timestamp) VALUES (?, ?, ?, ?)`;
+          db.query(insertQuery, [userId, userCode, userName, new Date()], (err, result) => {
+            if (err) console.log('insertQuery error: ', err);
+            console.log('New User saved successfully into the database!');
+          });
+
           await sendEvent(userId, userCode);
         } else {
           const userCode = ' ';
           const userId = `${member.user.id}`;
           const userName = `${member.user.username}`;
           console.log(`${userName} with the ID: ${userId} has Joined without using a custom link`)
+    
+          const insertQuery = `INSERT INTO ${table} (userId, userCode, userName, timestamp) VALUES (?, ?, ?, ?)`;
+          db.query(insertQuery, [userId, userCode, userName, new Date()], (err, result) => {
+            if (err) console.log('insertQuery error: ', err);
+            console.log('New User saved successfully into the database!');
+          });
         }
       });
 
@@ -94,6 +106,5 @@ client.on('guildMemberAdd', async (member) => {
     console.log(err);
   }
 });
-
 
 client.login(process.env.DISCORD_BOT_TOKEN);
