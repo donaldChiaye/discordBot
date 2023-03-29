@@ -20,9 +20,7 @@ $ yarn
 # run the main script
 $ yarn run start
 
-# run the ads script to send "Complete Registration" event to facebook on each new user
+# run the ads script to send "Custom conversion" event to facebook on each new user
 $ yarn run ads
-
-# The ads script is not integration database saving.
 ```
 
